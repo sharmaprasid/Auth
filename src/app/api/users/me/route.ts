@@ -7,7 +7,8 @@ export async function GET(request:NextRequest){
 try {
     
     const userId= await decodeToken(request);
-    const user=await User.findOne({_id:userId}).select("-password -isAdmin ");
+    const user=await User.findOne({_id:userId}).select(" -password -isAdmin ");
+   
     return NextResponse.json({
 
         message:"user Found",

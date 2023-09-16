@@ -9,10 +9,10 @@ export const sendMail = async ({ email, emailType, userId }: any) => {
     const userUpdate = {};
 
     if (emailType === "verify") {
-      await User.findById(userId,{verifyToken:hashedToken,verifyTokenExpiry : Date.now() + 3600000}) ;
+      await User.findByIdAndUpdate(userId,{verifyToken:hashedToken,verifyTokenExpiry : Date.now() + 3600000}) ;
       
     } else if (emailType === "reset") {
-         await User.findById(userId,{forgotPasswordToken:hashedToken,forgotPasswordTokenExpire : Date.now() + 3600000})
+         await User.findByIdAndUpdate(userId,{forgotPasswordToken:hashedToken,forgotPasswordTokenExpire : Date.now() + 3600000})
       
     }
 
@@ -29,12 +29,15 @@ export const sendMail = async ({ email, emailType, userId }: any) => {
 
     const subject =
       emailType === "verify" ? "Verify your email" : "Reset your password";
+      const content=
+      emailType==='verify'?`<p>Click<a href="${process.env.DOMAIN}/verifyemail?token=${hashedToken}">Here</a>to ${subject} or copy and paste url in browser${process.env.DOMAIN}/verifyemail?token=${hashedToken}</p>`:
+      `<p>Click<a href="${process.env.DOMAIN}/verifypasswordemail?token=${hashedToken}">Here</a>to ${subject} or copy and paste url in browser${process.env.DOMAIN}/verifypasswordemail?token=${hashedToken}</p>`
 
     const mailOptions = {
       from: "auth@gmail.com",
       to: email,
       subject: subject,
-      html:`<p>Click<a href="${process.env.DOMAIN}/verifyemail?token=${hashedToken}">Here</a>to ${subject} or copy and paste url in browser${process.env.DOMAIN}/verifyemail?token=${hashedToken}</p>`
+      html:content
     };
 
     // Send the email
