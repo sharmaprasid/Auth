@@ -14,6 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const EMAIL_FIELD = 'email';
 const PASSWORD_FIELD = 'password';
+const CONFIRM_PASSWORD_FIELD = 'confirmpassword';
 
 interface FormValues {
     username: string;
@@ -43,7 +44,11 @@ const validationSchema = Yup.object({
 const validationSchemaJoi = Joi.object({
     username: Joi.string().required(),
     email: Joi.string().email({ tlds: { allow: false } }).required(), // Adjust the email validation as per your requirements
-    password: Joi.string().required(),
+    password: Joi.string()
+        .required()
+        .min(10)
+        .regex(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=!]).*$/, 'password')
+        .message('Password must be at least 10 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character.'),
     confirmpassword: Joi.any()
         .equal(Joi.ref('password'))
         .required()
@@ -55,13 +60,19 @@ const validationSchemaJoi = Joi.object({
 
 const RegisterPage = () => {
     const [passwordToggle, setPasswordToggle] = useState(true);
+    const [confirmPasswordToggle, setConfirmPasswordToggle] = useState(true);
     const router = useRouter();
     const handlePasswordToggle = () => {
         setPasswordToggle(!passwordToggle);
     };
-
+    const handleConfirmPasswordToggle = () => {
+        setConfirmPasswordToggle(!confirmPasswordToggle);
+    };
     const getPasswordFieldType = () => {
         return passwordToggle ? 'password' : 'text';
+    };
+    const getConfirmPasswordFieldType = () => {
+        return confirmPasswordToggle ? 'password' : 'text';
     };
     const PasswordToggle: React.FC<{ togglePassword: () => void, isPasswordVisible: boolean }> = ({ togglePassword, isPasswordVisible }) => (
         <div>
@@ -107,13 +118,18 @@ const RegisterPage = () => {
                                     <div className="flex items-center gap-4">
                                         <div>{items.icon}</div>
                                         <Field
-                                            type={items.name === PASSWORD_FIELD ? getPasswordFieldType() : 'text'}
+                                            type={items.name === PASSWORD_FIELD ? getPasswordFieldType() : items.name === CONFIRM_PASSWORD_FIELD
+                                                ? getConfirmPasswordFieldType() : 'text'}
                                             name={items.name}
                                             className="outline-none text-gray-600 rounded-md px-3 py-2 w-full focus:ring focus:ring-blue-300"
                                             placeholder={items.placeholder}
                                         />
-                                        {items.name === PASSWORD_FIELD && (
-                                            <PasswordToggle togglePassword={handlePasswordToggle} isPasswordVisible={passwordToggle} />
+                                        {items.name === PASSWORD_FIELD &&
+                                            (
+                                                <PasswordToggle togglePassword={handlePasswordToggle} isPasswordVisible={passwordToggle} />
+                                            )}
+                                        {items.name === CONFIRM_PASSWORD_FIELD && (
+                                            <PasswordToggle togglePassword={handleConfirmPasswordToggle} isPasswordVisible={confirmPasswordToggle} />
                                         )}
                                     </div>
                                     <ErrorMessage name={items.name} component="div" className="text-red-500" />

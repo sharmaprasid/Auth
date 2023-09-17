@@ -31,7 +31,7 @@ export const sendMail = async ({ email, emailType, userId }: any) => {
       emailType === "verify" ? "Verify your email" : "Reset your password";
       const content=
       emailType==='verify'?`<p>Click<a href="${process.env.DOMAIN}/verifyemail?token=${hashedToken}">Here</a>to ${subject} or copy and paste url in browser${process.env.DOMAIN}/verifyemail?token=${hashedToken}</p>`:
-      `<p>Click<a href="${process.env.DOMAIN}/verifypasswordemail?token=${hashedToken}">Here</a>to ${subject} or copy and paste url in browser${process.env.DOMAIN}/verifypasswordemail?token=${hashedToken}</p>`
+      `<p>Click<a href="${process.env.DOMAIN}/updatepassword?token=${hashedToken}">Here</a>to ${subject} or copy and paste url in browser${process.env.DOMAIN}/updatepassword?token=${hashedToken}</p>`
 
     const mailOptions = {
       from: "auth@gmail.com",

@@ -25,13 +25,9 @@ export async function POST(request: NextRequest) {
 
    
    
-   const tokenData={
-    id:user._id,
-    username:user.username,
-    email:user.email
-   }
+ 
 
-const token= await jwt.sign(tokenData,process.env.SECRET!,{expiresIn:'1h'});
+
  await sendMail({email,emailType:"reset",userId:user._id})
     const response= NextResponse.json({
       message: "Reset Password link send successfully ",
@@ -39,7 +35,7 @@ const token= await jwt.sign(tokenData,process.env.SECRET!,{expiresIn:'1h'});
       
      
     },{status:200});
-    response.cookies.set("ftoken",token,{httpOnly:true})
+   
     return response;
 
   } catch (error:any) {

@@ -10,7 +10,7 @@ import Joi from 'joi';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { MdEmail } from 'react-icons/md';
-
+import { useSession, signIn, signOut } from "next-auth/react"
 // Constants for field names
 const EMAIL_FIELD = 'email';
 const PASSWORD_FIELD = 'password';
@@ -33,7 +33,7 @@ const socialHandleLogin = [
     { id: 3, icon: <AiFillGoogleSquare size={20} color="#E72734" /> }
 ];
 
-// Password toggle button component
+
 const PasswordToggle: React.FC<{ togglePassword: () => void, isPasswordVisible: boolean }> = ({ togglePassword, isPasswordVisible }) => (
     <div>
         <button onClick={togglePassword} type="button">
@@ -43,10 +43,23 @@ const PasswordToggle: React.FC<{ togglePassword: () => void, isPasswordVisible: 
 );
 
 const LoginPage = () => {
+    const { data: session, status } = useSession()
+    const userEmail = session?.user?.email
     const [user, setUser] = useState<User>({ email: '', password: '' });
     const [passwordToggle, setPasswordToggle] = useState(true);
     const router = useRouter();
+    if (status === "loading") {
+        return <p>Hang on there...</p>
+    }
+    if (status === "authenticated") {
+        return (
+            <>
+                <p>Signed in as {userEmail}</p>
+                <button onClick={() => signOut()}>Sign out</button>
 
+            </>
+        )
+    }
     const handlePasswordToggle = () => {
         setPasswordToggle(!passwordToggle);
     };
@@ -138,7 +151,9 @@ const LoginPage = () => {
                                 <div className="flex gap-2 items-center justify-center">
                                     {socialHandleLogin.map((item) => (
                                         <div key={item.id} className="text-blue-500 cursor-pointer">
-                                            {item.icon}
+                                            <button onClick={() => signIn("github")}>
+                                                {item.icon}
+                                            </button>
                                         </div>
                                     ))}
                                 </div>
