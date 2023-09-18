@@ -5,11 +5,15 @@ export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const publicPaths = ['/login', '/register', '/forgotpassword', '/verifyemail','/updatepassword'];
   const token = request.cookies.get('token')?.value || '';
-  const ftoken = request.cookies.get('ftoken')?.value || '';
+  const stoken=request.cookies.get('next-auth.session-token')?.value||'';
+
 
   if (publicPaths.includes(path)) {
    
     if (path === '/verifyemail' ) {
+      return NextResponse.next();
+    }
+    if (path === '/dashboard' ) {
       return NextResponse.next();
     }
      if (path === '/updatepassword' ) {
@@ -17,14 +21,12 @@ export function middleware(request: NextRequest) {
     }
   
     
-    if (ftoken) {
-      return NextResponse.redirect(new URL('/updatepassword', request.nextUrl));
-    }
+    
     
     return NextResponse.next(); 
   }
 
-  if (!token) {
+  if (!token||!stoken) {
     return NextResponse.redirect(new URL('/login', request.nextUrl));
   }
 
@@ -44,5 +46,6 @@ export const config = {
     '/forgotpassword',
     '/verifypassword',
     '/verifypasswordemail',
+    
   ],
 };

@@ -13,7 +13,7 @@ const userSchema=new mongoose.Schema({
     },
     password:{
         type:String,
-        required:true ,
+  
     
     },
     isVerified:{
@@ -28,6 +28,9 @@ const userSchema=new mongoose.Schema({
     forgotPasswordTokenExpire:Date,
     verifyToken:String,
     verifyTokenExpiry:Date,
+    googleId: String,
+    facebookId: String,
+    twitterId: String,
 
     
 })
