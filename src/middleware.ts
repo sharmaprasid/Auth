@@ -13,9 +13,7 @@ export function middleware(request: NextRequest) {
     if (path === '/verifyemail' ) {
       return NextResponse.next();
     }
-    if (path === '/dashboard' ) {
-      return NextResponse.next();
-    }
+   
      if (path === '/updatepassword' ) {
       return NextResponse.next();
     }

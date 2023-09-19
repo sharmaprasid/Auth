@@ -24,8 +24,9 @@
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.4.5",
     "next": "13.4.19",
-    "next-auth": "^4.23.1",
     "nodemailer": "^6.9.4",
+    "passport": "^0.6.0",
+    "passport-facebook": "^3.0.0",
     "postcss": "8.4.28",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -38,6 +39,8 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.3",
     "@types/jsonwebtoken": "^9.0.2",
-    "@types/nodemailer": "^6.4.9"
+    "@types/nodemailer": "^6.4.9",
+    "@types/passport": "^1.0.12",
+    "@types/passport-facebook": "^3.0.0"
   }
 }

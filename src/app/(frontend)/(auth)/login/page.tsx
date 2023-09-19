@@ -10,7 +10,7 @@ import Joi from 'joi';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { MdEmail } from 'react-icons/md';
-import { signIn } from "next-auth/react"
+
 // Constants for field names
 const EMAIL_FIELD = 'email';
 const PASSWORD_FIELD = 'password';
@@ -27,11 +27,6 @@ const formDetails = [
     { id: 2, icon: <AiFillLock size={20} />, placeholder: 'Password', name: PASSWORD_FIELD },
 ];
 
-const socialHandleLogin = [
-    { id: 1, icon: <AiFillFacebook size={20} color="#3B5998" />, name: 'facebook' },
-    { id: 2, icon: <AiFillGithub size={20} color="#1DA0F2" />, name: 'github' },
-    { id: 3, icon: <AiFillGoogleSquare size={20} color="#E72734" />, name: 'google' }
-];
 
 
 const PasswordToggle: React.FC<{ togglePassword: () => void, isPasswordVisible: boolean }> = ({ togglePassword, isPasswordVisible }) => (
@@ -133,19 +128,8 @@ const LoginPage = () => {
                                     Forgot Password?
                                 </Link>
                             </div>
-                            <hr />
-                            <div className="mt-6 text-center">
-                                <p className="mb-2">Or login with:</p>
-                                <div className="flex gap-2 items-center justify-center">
-                                    {socialHandleLogin.map((item) => (
-                                        <div key={item.id} className="text-blue-500 cursor-pointer">
-                                            <button onClick={() => signIn(item.name)}>
-                                                {item.icon}
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
+
+
                         </Form>
                     )}
                 </Formik>
